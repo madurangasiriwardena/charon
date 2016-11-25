@@ -17,26 +17,25 @@
  */
 package org.wso2.charon.core.v2.protocol.endpoints;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
-import org.wso2.charon.core.v2.encoder.JSONDecoder;
-import org.wso2.charon.core.v2.exceptions.NotFoundException;
-import org.wso2.charon.core.v2.extensions.UserManager;
-import org.wso2.charon.core.v2.protocol.ResponseCodeConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.charon.core.v2.config.CharonConfiguration;
+import org.wso2.charon.core.v2.encoder.JSONDecoder;
 import org.wso2.charon.core.v2.encoder.JSONEncoder;
 import org.wso2.charon.core.v2.exceptions.BadRequestException;
 import org.wso2.charon.core.v2.exceptions.CharonException;
 import org.wso2.charon.core.v2.exceptions.InternalErrorException;
+import org.wso2.charon.core.v2.exceptions.NotFoundException;
+import org.wso2.charon.core.v2.extensions.UserManager;
 import org.wso2.charon.core.v2.objects.AbstractSCIMObject;
+import org.wso2.charon.core.v2.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.v2.protocol.SCIMResponse;
 import org.wso2.charon.core.v2.schema.SCIMConstants;
 import org.wso2.charon.core.v2.schema.SCIMResourceSchemaManager;
 import org.wso2.charon.core.v2.schema.SCIMResourceTypeSchema;
 import org.wso2.charon.core.v2.utils.CopyUtil;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,10 +46,9 @@ import java.util.Map;
  */
 public class ServiceProviderConfigResourceManager extends AbstractResourceManager {
 
-    private Log logger;
+    private static final Logger log = LoggerFactory.getLogger(ServiceProviderConfigResourceManager.class);
 
     public ServiceProviderConfigResourceManager() {
-        logger = LogFactory.getLog(ServiceProviderConfigResourceManager.class);
     }
 
     /**

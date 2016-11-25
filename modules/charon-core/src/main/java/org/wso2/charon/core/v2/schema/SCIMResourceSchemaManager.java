@@ -30,124 +30,131 @@ import java.util.Arrays;
 
 public class SCIMResourceSchemaManager {
 
-	private static SCIMResourceSchemaManager manager = new SCIMResourceSchemaManager();
+    private static SCIMResourceSchemaManager manager = new SCIMResourceSchemaManager();
 
-	public static SCIMResourceSchemaManager getInstance() {
-		return manager;
-	}
+    public static SCIMResourceSchemaManager getInstance() {
+        return manager;
+    }
 
-	/**
-	 * Return the SCIM User Resource Schema
-	 *
-	 * @return SCIMResourceTypeSchema
-	 */
-	public SCIMResourceTypeSchema getUserResourceSchema() {
-
-
-		SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
-		if (schemaExtension != null) {
-			return SCIMResourceTypeSchema.createSCIMResourceSchema(
-					new ArrayList<String>(Arrays.asList(SCIMConstants.USER_CORE_SCHEMA_URI, schemaExtension.getURI())),
-					SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID, SCIMSchemaDefinitions.META,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.USERNAME,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.NAME,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.DISPLAY_NAME,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.NICK_NAME,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PROFILE_URL,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.TITLE,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.USER_TYPE,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PREFERRED_LANGUAGE,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.LOCALE,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.TIME_ZONE,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ACTIVE,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PASSWORD,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.EMAILS,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PHONE_NUMBERS,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.IMS,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PHOTOS,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ADDRESSES,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.GROUPS,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ENTITLEMENTS,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ROLES,
-					SCIMSchemaDefinitions.SCIMUserSchemaDefinition.X509CERTIFICATES,
-					schemaExtension);
-		}
-		return SCIMSchemaDefinitions.SCIM_USER_SCHEMA;
-	}
-
-	/**
-	 * check whether the extension is enabled
-	 * @return
+    /**
+     * Return the SCIM User Resource Schema
+     *
+     * @return SCIMResourceTypeSchema
      */
-	public Boolean isExtensionSet() {
-		int numOfCoreAttributes = SCIMSchemaDefinitions.SCIM_USER_SCHEMA.getAttributesList().size();
+    public SCIMResourceTypeSchema getUserResourceSchema() {
 
-		SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
-		if (schemaExtension != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	/**
-	 * return the extension name
-	 * @return
+        SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
+        if (schemaExtension != null) {
+            return SCIMResourceTypeSchema.createSCIMResourceSchema(
+                    new ArrayList<String>(Arrays.asList(SCIMConstants.USER_CORE_SCHEMA_URI, schemaExtension.getURI())),
+                    SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID, SCIMSchemaDefinitions.META,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.USERNAME,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.NAME,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.DISPLAY_NAME,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.NICK_NAME,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PROFILE_URL,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.TITLE,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.USER_TYPE,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PREFERRED_LANGUAGE,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.LOCALE,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.TIME_ZONE,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ACTIVE,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PASSWORD,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.EMAILS,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PHONE_NUMBERS,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.IMS,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.PHOTOS,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ADDRESSES,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.GROUPS,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ENTITLEMENTS,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.ROLES,
+                    SCIMSchemaDefinitions.SCIMUserSchemaDefinition.X509CERTIFICATES,
+                    schemaExtension);
+        }
+        return SCIMSchemaDefinitions.SCIM_USER_SCHEMA;
+    }
+
+    /**
+     * check whether the extension is enabled
+     *
+     * @return
      */
-	public String getExtensionName() {
-		SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
-		if (schemaExtension == null) {
-			return null;
-		}
-		return schemaExtension.getName();
-	}
+    public Boolean isExtensionSet() {
+        int numOfCoreAttributes = SCIMSchemaDefinitions.SCIM_USER_SCHEMA.getAttributesList().size();
 
-	/**
-	 * return the extension URI
-	 * @return
+        SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
+        if (schemaExtension != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * return the extension name
+     *
+     * @return
      */
-	public String getExtensionURI() {
-		SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
-		if (schemaExtension == null) {
-			return null;
-		}
-		return schemaExtension.getURI();
-	}
+    public String getExtensionName() {
+        SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
+        if (schemaExtension == null) {
+            return null;
+        }
+        return schemaExtension.getName();
+    }
 
-	/**
-	 * return the extension's required property
-	 * @return
+    /**
+     * return the extension URI
+     *
+     * @return
      */
-	public boolean getExtensionRequired() {
-		SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
-		if (schemaExtension == null) {
-			return false;
-		}
-		return schemaExtension.getRequired();
-	}
+    public String getExtensionURI() {
+        SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
+        if (schemaExtension == null) {
+            return null;
+        }
+        return schemaExtension.getURI();
+    }
 
-	/**
-	 * return service provider config resource schema
-	 * @return
+    /**
+     * return the extension's required property
+     *
+     * @return
      */
-	public SCIMResourceTypeSchema getServiceProviderConfigResourceSchema() {
-		return SCIMSchemaDefinitions.SCIM_SERVICE_PROVIDER_CONFIG_SCHEMA;
-	}
+    public boolean getExtensionRequired() {
+        SCIMAttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
+        if (schemaExtension == null) {
+            return false;
+        }
+        return schemaExtension.getRequired();
+    }
 
-	/**
-	 * return group resource schema
-	 * @return
-	 */
-	public SCIMResourceTypeSchema getGroupResourceSchema() {
-		return SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA;
-	}
+    /**
+     * return service provider config resource schema
+     *
+     * @return
+     */
+    public SCIMResourceTypeSchema getServiceProviderConfigResourceSchema() {
+        return SCIMSchemaDefinitions.SCIM_SERVICE_PROVIDER_CONFIG_SCHEMA;
+    }
 
-	/**
-	 * return resource type resource schema
-	 * @return
-	 */
-	public SCIMResourceTypeSchema getResourceTypeResourceSchema() {
-		return SCIMSchemaDefinitions.SCIM_RESOURCE_TYPE_SCHEMA;
-	}
+    /**
+     * return group resource schema
+     *
+     * @return
+     */
+    public SCIMResourceTypeSchema getGroupResourceSchema() {
+        return SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA;
+    }
+
+    /**
+     * return resource type resource schema
+     *
+     * @return
+     */
+    public SCIMResourceTypeSchema getResourceTypeResourceSchema() {
+        return SCIMSchemaDefinitions.SCIM_RESOURCE_TYPE_SCHEMA;
+    }
 
 }

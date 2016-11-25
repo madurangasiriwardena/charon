@@ -63,7 +63,7 @@ public class SCIMAttributeSchema implements AttributeSchema, Serializable {
                                 SCIMDefinitions.Uniqueness uniqueness, ArrayList<String> canonicalValues,
                                 ArrayList<SCIMDefinitions.ReferenceType> referenceTypes,
                                 ArrayList<SCIMAttributeSchema> subAttributes) {
-        this.URI=uri;
+        this.URI = uri;
         this.name = name;
         this.type = type;
         this.multiValued = multiValued;
@@ -78,70 +78,112 @@ public class SCIMAttributeSchema implements AttributeSchema, Serializable {
         this.referenceTypes = referenceTypes;
     }
 
-    public static SCIMAttributeSchema createSCIMAttributeSchema(String uri,String name, SCIMDefinitions.DataType type,
-                                                                Boolean multiValued, String description, Boolean required,
-                                                                Boolean caseExact, SCIMDefinitions.Mutability mutability,
+    public static SCIMAttributeSchema createSCIMAttributeSchema(String uri, String name, SCIMDefinitions.DataType type,
+                                                                Boolean multiValued, String description, Boolean
+                                                                        required,
+                                                                Boolean caseExact, SCIMDefinitions.Mutability
+                                                                        mutability,
                                                                 SCIMDefinitions.Returned returned,
                                                                 SCIMDefinitions.Uniqueness uniqueness,
                                                                 ArrayList<String> canonicalValues,
                                                                 ArrayList<SCIMDefinitions.ReferenceType> referenceTypes,
-                                                                ArrayList<SCIMAttributeSchema> subAttributes){
+                                                                ArrayList<SCIMAttributeSchema> subAttributes) {
 
         return new SCIMAttributeSchema(uri, name, type, multiValued, description, required, caseExact, mutability,
-                                        returned, uniqueness, canonicalValues, referenceTypes, subAttributes);
+                returned, uniqueness, canonicalValues, referenceTypes, subAttributes);
     }
 
     @Override
-    public void setURI(String URI) { this.URI = URI; }
+    public void setURI(String URI) {
+        this.URI = URI;
+    }
 
     @Override
-    public String getURI() { return URI; }
+    public String getURI() {
+        return URI;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name=name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public SCIMDefinitions.DataType getType() { return type; }
+    public SCIMDefinitions.DataType getType() {
+        return type;
+    }
 
-    public void setType(SCIMDefinitions.DataType type) { this.type=type; }
+    public void setType(SCIMDefinitions.DataType type) {
+        this.type = type;
+    }
 
-    public boolean getMultiValued() { return multiValued; }
+    public boolean getMultiValued() {
+        return multiValued;
+    }
 
-    public void setMultiValued(boolean isMultiValued) { this.multiValued=isMultiValued; }
+    public void setMultiValued(boolean isMultiValued) {
+        this.multiValued = isMultiValued;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description=description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public boolean getRequired() { return required; }
+    public boolean getRequired() {
+        return required;
+    }
 
-    public void setRequired(boolean isRequired) { this.required=isRequired; }
+    public void setRequired(boolean isRequired) {
+        this.required = isRequired;
+    }
 
-    public boolean getCaseExact() { return caseExact; }
+    public boolean getCaseExact() {
+        return caseExact;
+    }
 
-    public void setCaseExact(boolean isCaseExact) { this.caseExact=isCaseExact; }
+    public void setCaseExact(boolean isCaseExact) {
+        this.caseExact = isCaseExact;
+    }
 
-    public SCIMDefinitions.Mutability getMutability() { return mutability; }
+    public SCIMDefinitions.Mutability getMutability() {
+        return mutability;
+    }
 
-    public void setMutability(SCIMDefinitions.Mutability mutability) { this.mutability=mutability; }
+    public void setMutability(SCIMDefinitions.Mutability mutability) {
+        this.mutability = mutability;
+    }
 
-    public SCIMDefinitions.Returned getReturned() { return returned; }
+    public SCIMDefinitions.Returned getReturned() {
+        return returned;
+    }
 
-    public void setReturned(SCIMDefinitions.Returned returned) { this.returned=returned; }
+    public void setReturned(SCIMDefinitions.Returned returned) {
+        this.returned = returned;
+    }
 
-    public SCIMDefinitions.Uniqueness getUniqueness() { return uniqueness; }
+    public SCIMDefinitions.Uniqueness getUniqueness() {
+        return uniqueness;
+    }
 
-    public void setUniqueness(SCIMDefinitions.Uniqueness uniqueness) { this.uniqueness=uniqueness; }
+    public void setUniqueness(SCIMDefinitions.Uniqueness uniqueness) {
+        this.uniqueness = uniqueness;
+    }
 
     @Override
     public List<SCIMAttributeSchema> getSubAttributeSchemas() {
-        return subAttributes ;
+        return subAttributes;
     }
 
     @Override
     public AttributeSchema getSubAttributeSchema(String subAttribute) {
-        for(SCIMAttributeSchema subAttributeSchema : subAttributes){
-            if(subAttributeSchema.getName().equals(subAttribute)){
+        for (SCIMAttributeSchema subAttributeSchema : subAttributes) {
+            if (subAttributeSchema.getName().equals(subAttribute)) {
                 return subAttributeSchema;
             }
         }
@@ -152,9 +194,9 @@ public class SCIMAttributeSchema implements AttributeSchema, Serializable {
     public void removeSubAttribute(String subAttributeName) throws CharonException {
         ArrayList<AttributeSchema> tempSubAttributes = (ArrayList<AttributeSchema>) CopyUtil.deepCopy(subAttributes);
         int count = 0;
-        for(AttributeSchema subAttributeSchema : tempSubAttributes){
+        for (AttributeSchema subAttributeSchema : tempSubAttributes) {
 
-            if(subAttributeSchema.getName().equals(subAttributeName)){
+            if (subAttributeSchema.getName().equals(subAttributeName)) {
                 subAttributes.remove(count);
                 return;
             }
@@ -162,15 +204,25 @@ public class SCIMAttributeSchema implements AttributeSchema, Serializable {
         }
     }
 
-    public void setSubAttributes(ArrayList<SCIMAttributeSchema> subAttributes) { this.subAttributes = subAttributes; }
+    public void setSubAttributes(ArrayList<SCIMAttributeSchema> subAttributes) {
+        this.subAttributes = subAttributes;
+    }
 
-    public List<String> getCanonicalValues() { return canonicalValues; }
+    public List<String> getCanonicalValues() {
+        return canonicalValues;
+    }
 
-    public void setCanonicalValues(ArrayList<String> canonicalValues) { this.canonicalValues = canonicalValues; }
+    public void setCanonicalValues(ArrayList<String> canonicalValues) {
+        this.canonicalValues = canonicalValues;
+    }
 
-    public ArrayList<SCIMDefinitions.ReferenceType> getReferenceTypes() { return referenceTypes; }
+    public ArrayList<SCIMDefinitions.ReferenceType> getReferenceTypes() {
+        return referenceTypes;
+    }
 
-    public void setReferenceTypes(ArrayList<SCIMDefinitions.ReferenceType> referenceTypes) { this.referenceTypes = referenceTypes; }
+    public void setReferenceTypes(ArrayList<SCIMDefinitions.ReferenceType> referenceTypes) {
+        this.referenceTypes = referenceTypes;
+    }
 
 
 }

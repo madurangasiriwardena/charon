@@ -17,11 +17,11 @@
  */
 package org.wso2.charon.core.v2.encoder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.charon.core.v2.attributes.Attribute;
 import org.wso2.charon.core.v2.attributes.ComplexAttribute;
 import org.wso2.charon.core.v2.attributes.MultiValuedAttribute;
@@ -36,6 +36,7 @@ import org.wso2.charon.core.v2.schema.SCIMConstants;
 import org.wso2.charon.core.v2.schema.SCIMDefinitions;
 import org.wso2.charon.core.v2.schema.SCIMResourceSchemaManager;
 import org.wso2.charon.core.v2.utils.AttributeUtil;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ import java.util.Map;
 public class JSONEncoder {
 
     private String format;
-    private Log logger = LogFactory.getLog(JSONEncoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(JSONEncoder.class);
 
     public JSONEncoder() {
         format = SCIMConstants.JSON;

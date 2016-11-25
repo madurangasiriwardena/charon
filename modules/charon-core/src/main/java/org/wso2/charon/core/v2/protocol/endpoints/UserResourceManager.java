@@ -1,30 +1,37 @@
 package org.wso2.charon.core.v2.protocol.endpoints;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wso2.charon.core.v2.attributes.Attribute;
 import org.wso2.charon.core.v2.config.CharonConfiguration;
 import org.wso2.charon.core.v2.encoder.JSONDecoder;
 import org.wso2.charon.core.v2.encoder.JSONEncoder;
-import org.wso2.charon.core.v2.exceptions.*;
+import org.wso2.charon.core.v2.exceptions.BadRequestException;
+import org.wso2.charon.core.v2.exceptions.CharonException;
+import org.wso2.charon.core.v2.exceptions.ConflictException;
+import org.wso2.charon.core.v2.exceptions.InternalErrorException;
+import org.wso2.charon.core.v2.exceptions.NotFoundException;
+import org.wso2.charon.core.v2.exceptions.NotImplementedException;
 import org.wso2.charon.core.v2.extensions.UserManager;
 import org.wso2.charon.core.v2.objects.ListedResource;
 import org.wso2.charon.core.v2.objects.User;
-import org.wso2.charon.core.v2.utils.ResourceManagerUtil;
 import org.wso2.charon.core.v2.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.v2.protocol.SCIMResponse;
+import org.wso2.charon.core.v2.schema.SCIMConstants;
 import org.wso2.charon.core.v2.schema.SCIMResourceSchemaManager;
 import org.wso2.charon.core.v2.schema.SCIMResourceTypeSchema;
-import org.wso2.charon.core.v2.utils.codeutils.FilterTreeManager;
-import org.wso2.charon.core.v2.utils.codeutils.Node;
-import org.wso2.charon.core.v2.attributes.Attribute;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-import org.wso2.charon.core.v2.schema.SCIMConstants;
 import org.wso2.charon.core.v2.schema.ServerSideValidator;
 import org.wso2.charon.core.v2.utils.CopyUtil;
+import org.wso2.charon.core.v2.utils.ResourceManagerUtil;
+import org.wso2.charon.core.v2.utils.codeutils.FilterTreeManager;
+import org.wso2.charon.core.v2.utils.codeutils.Node;
 import org.wso2.charon.core.v2.utils.codeutils.SearchRequest;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * REST API exposed by Charon-Core to perform operations on UserResource.
@@ -34,10 +41,11 @@ import java.util.*;
 
 public class UserResourceManager extends AbstractResourceManager {
 
-    private Log logger;
+    private static final Logger logger = LoggerFactory.getLogger(UserResourceManager.class);
+
 
     public UserResourceManager() {
-        logger = LogFactory.getLog(UserResourceManager.class);
+
     }
 
     /**

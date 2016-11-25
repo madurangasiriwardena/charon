@@ -17,12 +17,12 @@
  */
 package org.wso2.charon.core.v2.encoder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.charon.core.v2.attributes.Attribute;
 import org.wso2.charon.core.v2.attributes.ComplexAttribute;
 import org.wso2.charon.core.v2.attributes.DefaultAttributeFactory;
@@ -34,7 +34,13 @@ import org.wso2.charon.core.v2.exceptions.InternalErrorException;
 import org.wso2.charon.core.v2.objects.AbstractSCIMObject;
 import org.wso2.charon.core.v2.objects.SCIMObject;
 import org.wso2.charon.core.v2.protocol.ResponseCodeConstants;
-import org.wso2.charon.core.v2.schema.*;
+import org.wso2.charon.core.v2.schema.AttributeSchema;
+import org.wso2.charon.core.v2.schema.ResourceTypeSchema;
+import org.wso2.charon.core.v2.schema.SCIMAttributeSchema;
+import org.wso2.charon.core.v2.schema.SCIMConstants;
+import org.wso2.charon.core.v2.schema.SCIMDefinitions;
+import org.wso2.charon.core.v2.schema.SCIMResourceSchemaManager;
+import org.wso2.charon.core.v2.schema.SCIMResourceTypeSchema;
 import org.wso2.charon.core.v2.utils.AttributeUtil;
 import org.wso2.charon.core.v2.utils.codeutils.FilterTreeManager;
 import org.wso2.charon.core.v2.utils.codeutils.Node;
@@ -46,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static org.wso2.charon.core.v2.schema.SCIMDefinitions.DataType.BINARY;
 import static org.wso2.charon.core.v2.schema.SCIMDefinitions.DataType.BOOLEAN;
 import static org.wso2.charon.core.v2.schema.SCIMDefinitions.DataType.COMPLEX;
@@ -62,10 +69,11 @@ import static org.wso2.charon.core.v2.schema.SCIMDefinitions.DataType.STRING;
 
 public class JSONDecoder {
 
-    private Log logger;
+    private static final Logger logger = LoggerFactory.getLogger(JSONDecoder.class);
+
 
     public JSONDecoder() {
-        logger = LogFactory.getLog(JSONDecoder.class);
+
     }
 
     /**
@@ -193,7 +201,7 @@ public class JSONDecoder {
      * @return MultiValuedAttribute
      */
     private MultiValuedAttribute buildComplexMultiValuedAttribute
-                                    (AttributeSchema attributeSchema, JSONArray attributeValues)
+    (AttributeSchema attributeSchema, JSONArray attributeValues)
             throws CharonException, BadRequestException {
         try {
             MultiValuedAttribute multiValuedAttribute = new MultiValuedAttribute(attributeSchema.getName());
@@ -453,7 +461,7 @@ public class JSONDecoder {
                         // attribute to detect schema violations.
                         multiValuedAttribute = (MultiValuedAttribute)
                                 DefaultAttributeFactory.createAttribute(subAttributeSchema,
-                                multiValuedAttribute);
+                                        multiValuedAttribute);
                         subAttributesMap.put(subAttributeSchema.getName(), multiValuedAttribute);
 
                     } else {
@@ -515,7 +523,7 @@ public class JSONDecoder {
             logger.error("json error in decoding the request");
             throw new BadRequestException(ResponseCodeConstants.INVALID_SYNTAX);
         }
-        return  operationList;
+        return operationList;
     }
 
     /*
@@ -543,21 +551,21 @@ public class JSONDecoder {
             JSONArray schemas = (JSONArray)
                     decodedJsonObj.opt(SCIMConstants.CommonSchemaConstants.SCHEMAS);
 
-            if(schemas.length() != 1){
-                throw new BadRequestException( "Schema is invalid", ResponseCodeConstants.INVALID_VALUE);
+            if (schemas.length() != 1) {
+                throw new BadRequestException("Schema is invalid", ResponseCodeConstants.INVALID_VALUE);
             }
-            if(attributesValues != null){
-                for(int i = 0; i < attributesValues.length(); i++ ){
+            if (attributesValues != null) {
+                for (int i = 0; i < attributesValues.length(); i++) {
                     attributes.add((String) attributesValues.get(i));
                 }
             }
-            if(excludedAttributesValues != null){
-                for(int i = 0; i < excludedAttributesValues.length(); i++ ){
+            if (excludedAttributesValues != null) {
+                for (int i = 0; i < excludedAttributesValues.length(); i++) {
                     excludedAttributes.add((String) excludedAttributesValues.get(i));
                 }
             }
 
-            if(decodedJsonObj.optString(SCIMConstants.OperationalConstants.FILTER) != null){
+            if (decodedJsonObj.optString(SCIMConstants.OperationalConstants.FILTER) != null) {
                 filterTreeManager = new FilterTreeManager(
                         decodedJsonObj.optString(SCIMConstants.OperationalConstants.FILTER), schema);
                 rootNode = filterTreeManager.buildTree();
@@ -568,10 +576,10 @@ public class JSONDecoder {
             searchRequest.setCount(decodedJsonObj.optInt(SCIMConstants.OperationalConstants.COUNT));
             searchRequest.setStartIndex(decodedJsonObj.optInt(SCIMConstants.OperationalConstants.START_INDEX));
             searchRequest.setFilter(rootNode);
-            if(!decodedJsonObj.optString(SCIMConstants.OperationalConstants.SORT_BY).equals("")){
+            if (!decodedJsonObj.optString(SCIMConstants.OperationalConstants.SORT_BY).equals("")) {
                 searchRequest.setSortBy(decodedJsonObj.optString(SCIMConstants.OperationalConstants.SORT_BY));
             }
-            if(!decodedJsonObj.optString(SCIMConstants.OperationalConstants.SORT_ORDER).equals("")){
+            if (!decodedJsonObj.optString(SCIMConstants.OperationalConstants.SORT_ORDER).equals("")) {
                 searchRequest.setSortOder(decodedJsonObj.optString(SCIMConstants.OperationalConstants.SORT_ORDER));
             }
             return searchRequest;

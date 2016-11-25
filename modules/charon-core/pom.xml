@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.wso2.charon</groupId>
         <artifactId>charon-parent</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -36,6 +36,10 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -43,27 +47,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Export-Package>
-                            org.wso2.charon.core.*;version=3.0.0
-                        </Export-Package>
-                        <Import-Package>
-                            org.json.*,
-                            org.apache.commons.logging.*; version="${commons-logging.osgi.version.range}",
-                            org.apache.axiom.om.*; version="${axiom.osgi.version.range}",
-                            javax.xml.namespace.*,
-                            javax.xml.stream.*,
-                        </Import-Package>
-                    </instructions>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+    <properties>
+        <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)</slf4j.logging.package.import.version.range>
+        <export.package>
+            org.wso2.charon.core.*;version=3.0.0-SNAPSHOT
+        </export.package>
+        <import.package>
+            org.json.*,
+            org.slf4j.*;version="${slf4j.logging.package.import.version.range}",
+        </import.package>
+    </properties>
 </project>

@@ -19,20 +19,29 @@
 package org.wso2.charon.core.v2;
 
 
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wso2.charon.core.v2.attributes.Attribute;
 import org.wso2.charon.core.v2.attributes.SimpleAttribute;
-import org.wso2.charon.core.v2.exceptions.*;
+import org.wso2.charon.core.v2.exceptions.BadRequestException;
+import org.wso2.charon.core.v2.exceptions.CharonException;
+import org.wso2.charon.core.v2.exceptions.ConflictException;
+import org.wso2.charon.core.v2.exceptions.NotFoundException;
+import org.wso2.charon.core.v2.exceptions.NotImplementedException;
 import org.wso2.charon.core.v2.extensions.UserManager;
 import org.wso2.charon.core.v2.objects.Group;
 import org.wso2.charon.core.v2.objects.User;
-import org.wso2.charon.core.v2.utils.codeutils.Node;
-import org.wso2.charon.core.v2.attributes.Attribute;
 import org.wso2.charon.core.v2.utils.codeutils.ExpressionNode;
+import org.wso2.charon.core.v2.utils.codeutils.Node;
 import org.wso2.charon.core.v2.utils.codeutils.SearchRequest;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +52,7 @@ public class SCIMUserManager implements UserManager {
     public static final String SCIM_ENABLED = "SCIMEnabled";
     public static final String APPLICATION_DOMAIN = "Application";
     public static final String INTERNAL_DOMAIN = "Internal";
-    private static Log log = LogFactory.getLog(SCIMUserManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(SCIMUserManager.class);
 
 
     public SCIMUserManager() {
