@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.charon.core.v2.utils;
 
 import org.wso2.charon.core.v2.exceptions.CharonException;
@@ -6,7 +22,11 @@ import org.wso2.charon.core.v2.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.v2.schema.SCIMDefinitions;
 import org.wso2.charon.core.v2.schema.SCIMResourceTypeSchema;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class will act as a support class for endpoints
@@ -14,17 +34,18 @@ import java.util.*;
 public class ResourceManagerUtil {
 
     /**
-     * this method is to get the URI list of the attributes which need to retrieved from the databases.
+     * this method is to get the uri list of the attributes which need to retrieved from the databases.
      * Note that we should consider the 'attributes' and 'excludedAttributes' parameters for this process.
+     *
      * @param schema
      * @param requestedAttributes
      * @param requestedExcludingAttributes
      * @return
      * @throws CharonException
      */
-    public static Map<String,Boolean> getOnlyRequiredAttributesURIs(SCIMResourceTypeSchema schema,
-                                                                      String requestedAttributes,
-                                                                      String requestedExcludingAttributes)
+    public static Map<String, Boolean> getOnlyRequiredAttributesURIs(SCIMResourceTypeSchema schema,
+                                                                     String requestedAttributes,
+                                                                     String requestedExcludingAttributes)
             throws CharonException {
 
         ArrayList<AttributeSchema> attributeSchemaArrayList = (ArrayList<AttributeSchema>)
@@ -83,12 +104,13 @@ public class ResourceManagerUtil {
                     requestedAttributes, requestedExcludingAttributes,
                     requestedAttributesList, requestedExcludingAttributesList);
         }
-       return convertSchemasToURIs(attributeSchemaArrayList);
+        return convertSchemasToURIs(attributeSchemaArrayList);
     }
 
     /**
-     * this method is to get the URI list of the sub attributes which need to retrieved from the databases.
+     * this method is to get the uri list of the sub attributes which need to retrieved from the databases.
      * Note that we should consider the 'attributes' and 'excludedAttributes' parameters for this process.
+     *
      * @param attributeSchema
      * @param attributeSchemaArrayList
      * @param requestedAttributes
@@ -123,7 +145,8 @@ public class ResourceManagerUtil {
                     if (subAttributeSchema.getReturned().equals(SCIMDefinitions.Returned.NEVER)) {
                         realAttributeSchema.removeSubAttribute(subAttributeSchema.getName());
                     }
-                    //if the returned property is request, need to check whether is it specifically requested by the user.
+                    //if the returned property is request, need to check whether is it specifically requested by the
+                    // user.
                     // If so return it.
                     if (requestedAttributes == null && requestedExcludingAttributes == null) {
                         if (subAttributeSchema.getReturned().equals(SCIMDefinitions.Returned.REQUEST)) {
@@ -159,7 +182,7 @@ public class ResourceManagerUtil {
                     }
                     getOnlyRequiredSubSubAttributesURIs(attributeSchema, subAttributeSchema,
                             attributeSchemaArrayList, requestedAttributes,
-                            requestedExcludingAttributes,requestedAttributesList,
+                            requestedExcludingAttributes, requestedAttributesList,
                             requestedExcludingAttributesList);
                 }
             }
@@ -167,8 +190,9 @@ public class ResourceManagerUtil {
     }
 
     /**
-     * this method is to get the URI list of the sub sub attributes which need to retrieved from the databases.
+     * this method is to get the uri list of the sub sub attributes which need to retrieved from the databases.
      * Note that we should consider the 'attributes' and 'excludedAttributes' parameters for this process.
+     *
      * @param attribute
      * @param subAttribute
      * @param attributeSchemaArrayList
@@ -213,7 +237,8 @@ public class ResourceManagerUtil {
                     if (subSubAttributeSchema.getReturned().equals(SCIMDefinitions.Returned.NEVER)) {
                         realAttributeSchema.removeSubAttribute(subSubAttributeSchema.getName());
                     }
-                    //if the returned property is request, need to check whether is it specifically requested by the user.
+                    //if the returned property is request, need to check whether is it specifically requested by the
+                    // user.
                     // If so return it.
                     if (requestedAttributes == null && requestedExcludingAttributes == null) {
                         if (subSubAttributeSchema.getReturned().equals(SCIMDefinitions.Returned.REQUEST)) {
@@ -229,7 +254,8 @@ public class ResourceManagerUtil {
                                     && (!requestedAttributesList.contains(attribute.getName() + "." +
                                     subAttribute.getName() + "." + subSubAttributeSchema.getName()))
                                     && (!requestedAttributesList.contains(attribute.getName()))
-                                    && (!requestedAttributesList.contains(attribute.getName() + "." + subAttribute.getName()))) {
+                                    && (!requestedAttributesList.contains(attribute.getName() + "." + subAttribute
+                                    .getName()))) {
                                 realAttributeSchema.removeSubAttribute(subSubAttributeSchema.getName());
                             }
                         } else if (requestedExcludingAttributes != null) {
@@ -253,15 +279,17 @@ public class ResourceManagerUtil {
 
     /**
      * this checks whether the sub attribute or sub sub attribute is exist in the given list.
+     *
      * @param requestedAttributes
      * @param attributeSchema
      * @return
      */
-    private static boolean isSubAttributeExistsInList(List<String> requestedAttributes, AttributeSchema attributeSchema) {
-        if(attributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)){
+    private static boolean isSubAttributeExistsInList(List<String> requestedAttributes, AttributeSchema
+            attributeSchema) {
+        if (attributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)) {
             List<SCIMAttributeSchema> subAttributeSchemas = attributeSchema.getSubAttributeSchemas();
 
-            for(SCIMAttributeSchema subAttributeSchema : subAttributeSchemas) {
+            for (SCIMAttributeSchema subAttributeSchema : subAttributeSchemas) {
                 if (requestedAttributes.contains(attributeSchema.getName() + "." + subAttributeSchema.getName())) {
                     return true;
                 }
@@ -283,10 +311,11 @@ public class ResourceManagerUtil {
         } else {
             return false;
         }
-     }
+    }
 
     /**
      * this checks whether sub attribute is exist in the given list.
+     *
      * @param requestedAttributes
      * @param attributeSchema
      * @param subAttributeSchema
@@ -296,12 +325,12 @@ public class ResourceManagerUtil {
                                                          AttributeSchema attributeSchema,
                                                          AttributeSchema subAttributeSchema) {
 
-        if(subAttributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)){
+        if (subAttributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)) {
             List<SCIMAttributeSchema> subSubAttributeSchemas = subAttributeSchema.getSubAttributeSchemas();
 
-            for(SCIMAttributeSchema subSubAttributeSchema : subSubAttributeSchemas) {
+            for (SCIMAttributeSchema subSubAttributeSchema : subSubAttributeSchemas) {
                 if (requestedAttributes.contains(attributeSchema.getName() + "." +
-                        subAttributeSchema.getName()+"."+subSubAttributeSchema.getName())) {
+                        subAttributeSchema.getName() + "." + subSubAttributeSchema.getName())) {
                     return true;
                 }
             }
@@ -313,47 +342,49 @@ public class ResourceManagerUtil {
 
     /**
      * this makes a list of URIs from the list of schemas.
+     *
      * @param schemas
      * @return
      */
-    private static Map<String, Boolean> convertSchemasToURIs(List<AttributeSchema> schemas){
+    private static Map<String, Boolean> convertSchemasToURIs(List<AttributeSchema> schemas) {
 
-         Map<String, Boolean> URIList = new HashMap<>();
-         for(AttributeSchema schema : schemas){
-             if(schema.getType().equals(SCIMDefinitions.DataType.COMPLEX)){
-                 List<SCIMAttributeSchema> subAttributeSchemas = schema.getSubAttributeSchemas();
-                 for(SCIMAttributeSchema subAttributeSchema : subAttributeSchemas){
-                     if(subAttributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)){
-                         List<SCIMAttributeSchema> subSubAttributeSchemas = subAttributeSchema.getSubAttributeSchemas();
-                         for(SCIMAttributeSchema subSubAttributeSchema : subSubAttributeSchemas){
-                             URIList.put(subSubAttributeSchema.getURI(), subSubAttributeSchema.getMultiValued());
-                         }
-                     } else {
-                         URIList.put(subAttributeSchema.getURI(), subAttributeSchema.getMultiValued());
-                     }
-                 }
-             } else {
-                 URIList.put(schema.getURI(), schema.getMultiValued());
-             }
-         }
-         return  URIList;
-     }
+        Map<String, Boolean> uriList = new HashMap<>();
+        for (AttributeSchema schema : schemas) {
+            if (schema.getType().equals(SCIMDefinitions.DataType.COMPLEX)) {
+                List<SCIMAttributeSchema> subAttributeSchemas = schema.getSubAttributeSchemas();
+                for (SCIMAttributeSchema subAttributeSchema : subAttributeSchemas) {
+                    if (subAttributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)) {
+                        List<SCIMAttributeSchema> subSubAttributeSchemas = subAttributeSchema.getSubAttributeSchemas();
+                        for (SCIMAttributeSchema subSubAttributeSchema : subSubAttributeSchemas) {
+                            uriList.put(subSubAttributeSchema.getURI(), subSubAttributeSchema.getMultiValued());
+                        }
+                    } else {
+                        uriList.put(subAttributeSchema.getURI(), subAttributeSchema.getMultiValued());
+                    }
+                }
+            } else {
+                uriList.put(schema.getURI(), schema.getMultiValued());
+            }
+        }
+        return uriList;
+    }
 
     /**
      * this is to remove given attribute from the given list.
+     *
      * @param attributeSchemaList
      * @param attributeName
      * @throws CharonException
      */
-     private static void removeAttributesFromList(List<AttributeSchema> attributeSchemaList, String attributeName)
-             throws CharonException {
-         List<AttributeSchema> tempList = (List<AttributeSchema>) CopyUtil.deepCopy(attributeSchemaList);
-         int count = 0;
-         for(AttributeSchema attributeSchema : tempList){
-             if(attributeSchema.getName().equals(attributeName)){
-                   attributeSchemaList.remove(count);
-             }
-             count++;
-         }
-     }
+    private static void removeAttributesFromList(List<AttributeSchema> attributeSchemaList, String attributeName)
+            throws CharonException {
+        List<AttributeSchema> tempList = (List<AttributeSchema>) CopyUtil.deepCopy(attributeSchemaList);
+        int count = 0;
+        for (AttributeSchema attributeSchema : tempList) {
+            if (attributeSchema.getName().equals(attributeName)) {
+                attributeSchemaList.remove(count);
+            }
+            count++;
+        }
+    }
 }

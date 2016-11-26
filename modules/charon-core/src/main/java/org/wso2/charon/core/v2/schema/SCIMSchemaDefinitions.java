@@ -1,19 +1,17 @@
 /*
- * Copyright (c) 2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.wso2.charon.core.v2.schema;
 
@@ -63,7 +61,7 @@ public class SCIMSchemaDefinitions {
                     SCIMDefinitions.Mutability.READ_ONLY, SCIMDefinitions.Returned.DEFAULT,
                     SCIMDefinitions.Uniqueness.NONE, null, null, null);
 
-    //The URI of the resource being returned
+    //The uri of the resource being returned
     public static final SCIMAttributeSchema LOCATION =
             SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.CommonSchemaConstants.LOCATION_URI,
                     SCIMConstants.CommonSchemaConstants.LOCATION,
@@ -116,6 +114,9 @@ public class SCIMSchemaDefinitions {
                             VERSION)));
 
 
+    /**
+     * SCIM User Schema Definition
+     */
     public static class SCIMUserSchemaDefinition {
 
         /*********** SCIM defined user attribute schemas****************************/
@@ -381,11 +382,11 @@ public class SCIMSchemaDefinitions {
                         SCIMDefinitions.Mutability.READ_ONLY, SCIMDefinitions.Returned.DEFAULT,
                         SCIMDefinitions.Uniqueness.NONE, null, null, null);
 
-        //The URI of the corresponding 'Group' resource to which the user belongs.
-        public static final SCIMAttributeSchema GROUP_$REF =
-                SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.GROUPS_$REF_URI,
-                        SCIMConstants.CommonSchemaConstants.$REF,
-                        SCIMDefinitions.DataType.REFERENCE, false, SCIMConstants.UserSchemaConstants.GROUP_$REF_DESC,
+        //The uri of the corresponding 'Group' resource to which the user belongs.
+        public static final SCIMAttributeSchema GROUP_REF =
+                SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.GROUPS_REF_URI,
+                        SCIMConstants.CommonSchemaConstants.REF,
+                        SCIMDefinitions.DataType.REFERENCE, false, SCIMConstants.UserSchemaConstants.GROUP_REF_DESC,
                         false, false,
                         SCIMDefinitions.Mutability.READ_ONLY, SCIMDefinitions.Returned.DEFAULT,
                         SCIMDefinitions.Uniqueness.NONE, null, new ArrayList<SCIMDefinitions.ReferenceType>
@@ -572,7 +573,7 @@ public class SCIMSchemaDefinitions {
                         SCIMDefinitions.DataType.STRING, false, SCIMConstants.UserSchemaConstants.MIDDLE_NAME_DESC,
                         false, false,
                         SCIMDefinitions.Mutability.READ_WRITE, SCIMDefinitions.Returned.DEFAULT,
-                        SCIMDefinitions.Uniqueness.NONE, null, null, null);//honorificPrefix
+                        SCIMDefinitions.Uniqueness.NONE, null, null, null); //honorificPrefix
 
         //The honorific prefix(es) of the User, or title in most Western languages.
         public static final SCIMAttributeSchema HONORIFIC_PREFIX =
@@ -777,7 +778,7 @@ public class SCIMSchemaDefinitions {
                         false,
                         SCIMDefinitions.Mutability.READ_ONLY, SCIMDefinitions.Returned.DEFAULT,
                         SCIMDefinitions.Uniqueness.NONE, null, null,
-                        new ArrayList<SCIMAttributeSchema>(Arrays.asList(GROUP_VALUE, GROUP_$REF, GROUP_DISPLAY,
+                        new ArrayList<SCIMAttributeSchema>(Arrays.asList(GROUP_VALUE, GROUP_REF, GROUP_DISPLAY,
                                 GROUP_TYPE)));
 
         //A list of entitlements for the User that represent a thing the User has.
@@ -816,6 +817,9 @@ public class SCIMSchemaDefinitions {
 
     }
 
+    /**
+     * SCIM defined group attribute schemas.
+     */
     public static class SCIMGroupSchemaDefinition {
 
         /*********** SCIM defined group attribute schemas ****************************/
@@ -833,11 +837,11 @@ public class SCIMSchemaDefinitions {
                         SCIMDefinitions.Mutability.IMMUTABLE, SCIMDefinitions.Returned.DEFAULT,
                         SCIMDefinitions.Uniqueness.NONE, null, null, null);
 
-        //The URI corresponding to a SCIM resource that is a member of this Group.
-        public static final SCIMAttributeSchema $REF =
-                SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.GroupSchemaConstants.$REF_URI,
-                        SCIMConstants.CommonSchemaConstants.$REF,
-                        SCIMDefinitions.DataType.REFERENCE, false, SCIMConstants.GroupSchemaConstants.$REF_DESC,
+        //The uri corresponding to a SCIM resource that is a member of this Group.
+        public static final SCIMAttributeSchema REF =
+                SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.GroupSchemaConstants.REF_URI,
+                        SCIMConstants.CommonSchemaConstants.REF,
+                        SCIMDefinitions.DataType.REFERENCE, false, SCIMConstants.GroupSchemaConstants.REF_DESC,
                         false, false,
                         SCIMDefinitions.Mutability.IMMUTABLE, SCIMDefinitions.Returned.DEFAULT,
                         SCIMDefinitions.Uniqueness.NONE, null, new ArrayList<SCIMDefinitions.ReferenceType>
@@ -874,10 +878,12 @@ public class SCIMSchemaDefinitions {
                         false, false,
                         SCIMDefinitions.Mutability.READ_WRITE, SCIMDefinitions.Returned.DEFAULT,
                         SCIMDefinitions.Uniqueness.NONE, null, null, new ArrayList<SCIMAttributeSchema>(Arrays.asList
-                                (VALUE, $REF, DISPLAY)));
+                                (VALUE, REF, DISPLAY)));
     }
 
-
+    /**
+     * SCIM defined ServiceProviderConfig schemas.
+     */
     public static class SCIMServiceProviderConfigSchemaDefinition {
 
         /*********** SCIM defined ServiceProviderConfig schemas ****************************/
@@ -1114,6 +1120,9 @@ public class SCIMSchemaDefinitions {
 
     }
 
+    /**
+     * SCIM defined resourceType  schemas.
+     */
     public static class SCIMResourceTypeSchemaDefinition {
 
         /*********** SCIM defined resourceType  schemas ****************************/

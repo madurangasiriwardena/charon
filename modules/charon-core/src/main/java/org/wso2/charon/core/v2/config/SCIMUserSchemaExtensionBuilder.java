@@ -1,19 +1,17 @@
 /*
- * Copyright (c) 2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.wso2.charon.core.v2.config;
 
@@ -24,7 +22,6 @@ import org.wso2.charon.core.v2.exceptions.CharonException;
 import org.wso2.charon.core.v2.exceptions.InternalErrorException;
 import org.wso2.charon.core.v2.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.v2.schema.SCIMDefinitions;
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +55,7 @@ public class SCIMUserSchemaExtensionBuilder {
     public SCIMAttributeSchema getExtensionSchema() {
         return extensionSchema;
     }
+
     /*
      * Logic goes here
      * @throws CharonException
@@ -198,16 +196,16 @@ public class SCIMUserSchemaExtensionBuilder {
                                                          ArrayList<SCIMAttributeSchema> subAttributeList) {
 
         return SCIMAttributeSchema.createSCIMAttributeSchema
-                (attribute.getURI(), attribute.getName(), attribute.getType(),
-                attribute.getMultiValued(), attribute.description, attribute.required, attribute.caseExact,
-                attribute.mutability, attribute.returned, attribute.uniqueness,
-                attribute.canonicalValues, attribute.referenceTypes, subAttributeList);
+                (attribute.getUri(), attribute.getName(), attribute.getType(),
+                        attribute.getMultiValued(), attribute.description, attribute.required, attribute.caseExact,
+                        attribute.mutability, attribute.returned, attribute.uniqueness,
+                        attribute.canonicalValues, attribute.referenceTypes, subAttributeList);
     }
 
 
     class ExtensionAttributeSchemaConfig {
         //unique identifier for the attribute
-        private String URI;
+        private String uri;
         //name of the attribute
         private String name;
         //data type of the attribute
@@ -238,12 +236,12 @@ public class SCIMUserSchemaExtensionBuilder {
             return subAttributes;
         }
 
-        public String getURI() {
-            return URI;
+        public String getUri() {
+            return uri;
         }
 
-        public void setURI(String URI) {
-            this.URI = URI;
+        public void setUri(String uri) {
+            this.uri = uri;
         }
 
         public String getName() {
@@ -333,7 +331,7 @@ public class SCIMUserSchemaExtensionBuilder {
 
         public ExtensionAttributeSchemaConfig(JSONObject attributeConfigJSON) throws CharonException {
             try {
-                URI = attributeConfigJSON.getString(SCIMConfigConstants.ATTRIBUTE_URI);
+                uri = attributeConfigJSON.getString(SCIMConfigConstants.ATTRIBUTE_URI);
                 name = attributeConfigJSON.getString(SCIMConfigConstants.ATTRIBUTE_NAME);
                 type = getDefinedDataType(attributeConfigJSON.getString(SCIMConfigConstants.DATA_TYPE));
                 multiValued = attributeConfigJSON.getBoolean(SCIMConfigConstants.MULTIVALUED);
@@ -496,7 +494,7 @@ public class SCIMUserSchemaExtensionBuilder {
             }
             return referenceTypes;
         }
-        }
-
     }
+
+}
 

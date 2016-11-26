@@ -1,19 +1,17 @@
 /*
- * Copyright (c) 2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.wso2.charon.core.v2;
@@ -46,6 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * SCIM User Manager
+ */
 public class SCIMUserManager implements UserManager {
 
     public static final String USER_NAME_STRING = "userName";
@@ -68,9 +69,8 @@ public class SCIMUserManager implements UserManager {
             out.writeObject(user);
             out.close();
             fileOut.close();
-            System.out.printf("Serialized data is saved in /home/vindula/Desktop/Charon/Storage/" + user.getId() + ".ser\n\n");
         } catch (IOException i) {
-            i.printStackTrace();
+            logger.error(i.getMessage(), i);
         }
         return user;
     }
@@ -89,8 +89,7 @@ public class SCIMUserManager implements UserManager {
         } catch (IOException i) {
             return null;
         } catch (ClassNotFoundException c) {
-            System.out.println("Employee class not found");
-            c.printStackTrace();
+            logger.error("Employee class not found", c);
             return null;
         }
         return e;
@@ -102,7 +101,7 @@ public class SCIMUserManager implements UserManager {
             File file = new File("/home/vindula/Desktop/Charon/Storage/" + userId + ".ser");
 
             if (file.delete()) {
-                System.out.println(file.getName() + " is deleted!");
+
             } else {
                 throw new CharonException("Error occurred while deleting");
 
@@ -113,7 +112,9 @@ public class SCIMUserManager implements UserManager {
     }
 
     @Override
-    public List<Object> listUsersWithGET(Node node, int startIndex, int count, String sortBy, String sortOrder, Map<String, Boolean> requiredAttributes) throws CharonException, NotImplementedException, BadRequestException {
+    public List<Object> listUsersWithGET(Node node, int startIndex, int count, String sortBy, String sortOrder,
+                                         Map<String, Boolean> requiredAttributes) throws CharonException,
+            NotImplementedException, BadRequestException {
         return null;
     }
 
@@ -127,17 +128,18 @@ public class SCIMUserManager implements UserManager {
             } else {
                 User e = null;
                 try {
-                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/Storage/" + fileEntry.getName());
+                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/Storage/" + fileEntry
+                            .getName());
                     ObjectInputStream in = new ObjectInputStream(fileIn);
                     e = (User) in.readObject();
                     in.close();
                     fileIn.close();
                 } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (ClassNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
                 userList.add(e);
             }
@@ -147,8 +149,9 @@ public class SCIMUserManager implements UserManager {
     }
 
     @Override
-    public List<Object> listUsersWithPost(SearchRequest searchRequest, Map<String, Boolean> requiredAttributes) throws CharonException, NotImplementedException, BadRequestException {
-       return  null;
+    public List<Object> listUsersWithPost(SearchRequest searchRequest, Map<String, Boolean> requiredAttributes)
+            throws CharonException, NotImplementedException, BadRequestException {
+        return null;
 
     }
 
@@ -162,17 +165,18 @@ public class SCIMUserManager implements UserManager {
             } else {
                 User e = null;
                 try {
-                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/Storage/" + fileEntry.getName());
+                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/Storage/" + fileEntry
+                            .getName());
                     ObjectInputStream in = new ObjectInputStream(fileIn);
                     e = (User) in.readObject();
                     in.close();
                     fileIn.close();
                 } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (ClassNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
                 userList.add(e);
             }
@@ -189,7 +193,7 @@ public class SCIMUserManager implements UserManager {
         try {
             return listUsers().size();
         } catch (CharonException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -200,26 +204,19 @@ public class SCIMUserManager implements UserManager {
             User user = createUser(validatedUser, null);
             return user;
         } catch (CharonException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
 
 
     public List<User> filterUsers(Node rootNode) {
-        ExpressionNode en = (ExpressionNode) rootNode;
-        String attributeValue = en.getAttributeValue();
-        String operation = en.getOperation();
-        String attribute = en.getValue();
-
-        System.out.println(attributeValue+"-"+operation+"-"+attribute);
         return null;
     }
 
 
     public List<User> sortUsers(String sortBy, String sortOrder) {
         //let the user core to handle the sorting
-        System.out.println(sortOrder);
         try {
             return listUsers();
         } catch (CharonException e) {
@@ -233,7 +230,8 @@ public class SCIMUserManager implements UserManager {
     }
 
     @Override
-    public User createMe(User user, Map<String, Boolean> requiredAttributes) throws CharonException, ConflictException, BadRequestException {
+    public User createMe(User user, Map<String, Boolean> requiredAttributes) throws CharonException,
+            ConflictException, BadRequestException {
         return null;
     }
 
@@ -248,7 +246,8 @@ public class SCIMUserManager implements UserManager {
     }
 
     @Override
-    public Group createGroup(Group group, Map<String, Boolean> requiredAttributes) throws CharonException, ConflictException {
+    public Group createGroup(Group group, Map<String, Boolean> requiredAttributes) throws CharonException,
+            ConflictException {
         //TODO: Get the E-Tag(version) and add as a attribute of the cretated user
         try {
             FileOutputStream fileOut =
@@ -257,9 +256,8 @@ public class SCIMUserManager implements UserManager {
             out.writeObject(group);
             out.close();
             fileOut.close();
-            System.out.printf("Serialized data is saved in /home/vindula/Desktop/Charon/GroupStorage/" + group.getId() + ".ser\n\n");
         } catch (IOException i) {
-            i.printStackTrace();
+            logger.error(i.getMessage(), i);
         }
         return group;
     }
@@ -276,8 +274,7 @@ public class SCIMUserManager implements UserManager {
         } catch (IOException i) {
             return null;
         } catch (ClassNotFoundException c) {
-            System.out.println("Employee class not found");
-            c.printStackTrace();
+            logger.error(c.getMessage(), c);
             return null;
         }
         return e;
@@ -289,7 +286,7 @@ public class SCIMUserManager implements UserManager {
             File file = new File("/home/vindula/Desktop/Charon/GroupStorage/" + id + ".ser");
 
             if (file.delete()) {
-                System.out.println(file.getName() + " is deleted!");
+
             } else {
                 throw new CharonException("Error occurred while deleting");
 
@@ -300,7 +297,9 @@ public class SCIMUserManager implements UserManager {
     }
 
     @Override
-    public List<Object> listGroupsWithGET(Node node, int startIndex, int count, String sortBy, String sortOrder, Map<String, Boolean> requiredAttributes) throws CharonException, NotImplementedException, BadRequestException {
+    public List<Object> listGroupsWithGET(Node node, int startIndex, int count, String sortBy, String sortOrder,
+                                          Map<String, Boolean> requiredAttributes) throws CharonException,
+            NotImplementedException, BadRequestException {
         return null;
     }
 
@@ -314,17 +313,18 @@ public class SCIMUserManager implements UserManager {
             } else {
                 Group e = null;
                 try {
-                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/GroupStorage/" + fileEntry.getName());
+                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/GroupStorage/" +
+                            fileEntry.getName());
                     ObjectInputStream in = new ObjectInputStream(fileIn);
                     e = (Group) in.readObject();
                     in.close();
                     fileIn.close();
                 } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (ClassNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
                 userList.add(e);
             }
@@ -338,7 +338,7 @@ public class SCIMUserManager implements UserManager {
         try {
             return listGroups().size();
         } catch (CharonException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return 0;
     }
@@ -353,17 +353,18 @@ public class SCIMUserManager implements UserManager {
             } else {
                 Group e = null;
                 try {
-                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/GroupStorage/" + fileEntry.getName());
+                    FileInputStream fileIn = new FileInputStream("/home/vindula/Desktop/Charon/GroupStorage/" +
+                            fileEntry.getName());
                     ObjectInputStream in = new ObjectInputStream(fileIn);
                     e = (Group) in.readObject();
                     in.close();
                     fileIn.close();
                 } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 } catch (ClassNotFoundException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
                 groupList.add(e);
             }
@@ -379,25 +380,25 @@ public class SCIMUserManager implements UserManager {
 
 
     public List<Group> filterGroups(Node rootNode) {
-        ExpressionNode en = (ExpressionNode) rootNode;
-        String attributeValue = en.getAttributeValue();
-        String operation = en.getOperation();
-        String value = en.getValue();
-        try {
-            List<Group> list = listGroups();
-            List<Group> newList = new ArrayList<Group>();
-            for (Group group : list) {
-                Map<String, Attribute> attributeList = group.getAttributeList();
-                Attribute checkAttribute = attributeList.get("displayName");
-                if (checkAttribute != null) {
-                    if (((SimpleAttribute) checkAttribute).getValue().equals(value)) {
-                        newList.add(group);
+        if (rootNode instanceof ExpressionNode) {
+            ExpressionNode en = (ExpressionNode) rootNode;
+            String value = en.getValue();
+            try {
+                List<Group> list = listGroups();
+                List<Group> newList = new ArrayList<Group>();
+                for (Group group : list) {
+                    Map<String, Attribute> attributeList = group.getAttributeList();
+                    Attribute checkAttribute = attributeList.get("displayName");
+                    if (checkAttribute != null) {
+                        if (((SimpleAttribute) checkAttribute).getValue().equals(value)) {
+                            newList.add(group);
+                        }
                     }
                 }
+                return newList;
+            } catch (CharonException e) {
+                logger.error(e.getMessage(), e);
             }
-            return newList;
-        } catch (CharonException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -405,7 +406,6 @@ public class SCIMUserManager implements UserManager {
 
     public List<Group> sortGroups(String sortByAttributeURI, String sortOrder) {
         //let the user core to handle the sorting
-        System.out.println(sortOrder);
         try {
             return listGroups();
         } catch (CharonException e) {
@@ -419,16 +419,17 @@ public class SCIMUserManager implements UserManager {
             Group group = createGroup(validatedGroup, requiredAttributes);
             return group;
         } catch (CharonException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         } catch (ConflictException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
 
     @Override
-    public List<Object> listGroupsWithPost(SearchRequest searchRequest, Map<String, Boolean> requiredAttributes) throws NotImplementedException, BadRequestException, CharonException {
+    public List<Object> listGroupsWithPost(SearchRequest searchRequest, Map<String, Boolean> requiredAttributes)
+            throws NotImplementedException, BadRequestException, CharonException {
         return null;
     }
 }

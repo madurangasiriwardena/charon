@@ -1,19 +1,17 @@
 /*
- * Copyright (c) 2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.wso2.charon.core.v2.encoder;
 
@@ -372,20 +370,20 @@ public class JSONEncoder {
      * @return
      */
     public String buildUserResourceTypeJsonBody() throws JSONException {
-        JSONObject UserResourceTypeObject = new JSONObject();
+        JSONObject userResourceTypeObject = new JSONObject();
 
-        UserResourceTypeObject.put(
+        userResourceTypeObject.put(
                 SCIMConstants.CommonSchemaConstants.SCHEMAS, SCIMConstants.RESOURCE_TYPE_SCHEMA_URI);
-        UserResourceTypeObject.put(
+        userResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.ID, SCIMConstants.USER);
-        UserResourceTypeObject.put(
+        userResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.NAME, SCIMConstants.USER);
-        UserResourceTypeObject.put(
+        userResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.ENDPOINT, SCIMConstants.USER_ENDPOINT);
-        UserResourceTypeObject.put(
+        userResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.DESCRIPTION,
                 SCIMConstants.ResourceTypeSchemaConstants.USER_ACCOUNT);
-        UserResourceTypeObject.put(
+        userResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.SCHEMA, SCIMConstants.USER_CORE_SCHEMA_URI);
 
         if (SCIMResourceSchemaManager.getInstance().isExtensionSet()) {
@@ -397,11 +395,11 @@ public class JSONEncoder {
             extensionSchemaObject.put(
                     SCIMConstants.ResourceTypeSchemaConstants.SCHEMA_EXTENSIONS_REQUIRED,
                     SCIMResourceSchemaManager.getInstance().getExtensionRequired());
-            UserResourceTypeObject.put(
+            userResourceTypeObject.put(
                     SCIMConstants.ResourceTypeSchemaConstants.SCHEMA_EXTENSIONS, extensionSchemaObject);
         }
 
-        return UserResourceTypeObject.toString();
+        return userResourceTypeObject.toString();
     }
 
     /**
@@ -409,22 +407,22 @@ public class JSONEncoder {
      * @return
      */
     public String buildGroupResourceTypeJsonBody() throws JSONException {
-        JSONObject GroupResourceTypeObject = new JSONObject();
+        JSONObject groupResourceTypeObject = new JSONObject();
 
-        GroupResourceTypeObject.put(
+        groupResourceTypeObject.put(
                 SCIMConstants.CommonSchemaConstants.SCHEMAS, SCIMConstants.RESOURCE_TYPE_SCHEMA_URI);
-        GroupResourceTypeObject.put(
+        groupResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.ID, SCIMConstants.GROUP);
-        GroupResourceTypeObject.put(
+        groupResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.NAME, SCIMConstants.GROUP);
-        GroupResourceTypeObject.put(
+        groupResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.ENDPOINT, SCIMConstants.GROUP_ENDPOINT);
-        GroupResourceTypeObject.put(
+        groupResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.DESCRIPTION,
                 SCIMConstants.ResourceTypeSchemaConstants.GROUP);
-        GroupResourceTypeObject.put(
+        groupResourceTypeObject.put(
                 SCIMConstants.ResourceTypeSchemaConstants.SCHEMA, SCIMConstants.GROUP_CORE_SCHEMA_URI);
-        return GroupResourceTypeObject.toString();
+        return groupResourceTypeObject.toString();
     }
 
 }
