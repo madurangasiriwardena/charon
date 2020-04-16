@@ -50,6 +50,7 @@ public class SCIMConstants {
     public static final String ROLE = "Role";
     public static final String ENTERPRISE_USER = "EnterpriseUser";
     public static final String RESOURCE_TYPE = "ResourceType";
+    public static final String SCHEMA = "Schema";
 
     /*Resource endpoints relative to the base SCIM URL*/
     public static final String USER_ENDPOINT = "/Users";
