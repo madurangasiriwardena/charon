@@ -15,8 +15,6 @@
  */
 package org.wso2.charon3.core.schema;
 
-
-
 import org.wso2.charon3.core.config.SCIMGroupSchemaExtensionBuilder;
 import org.wso2.charon3.core.config.SCIMUserSchemaExtensionBuilder;
 
@@ -25,14 +23,15 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
-* This is to check for extension schema for the user and buildTree a custom user schema with it.
-* Unless a extension is defined, core-user schema need to be returned.
-*/
+ * This is to check for extension schema for the user and buildTree a custom user schema with it.
+ * Unless a extension is defined, core-user schema need to be returned.
+ */
 public class SCIMResourceSchemaManager {
 
     private static SCIMResourceSchemaManager manager = new SCIMResourceSchemaManager();
 
     public static SCIMResourceSchemaManager getInstance() {
+
         return manager;
     }
 
@@ -42,7 +41,6 @@ public class SCIMResourceSchemaManager {
      * @return SCIMResourceTypeSchema
      */
     public SCIMResourceTypeSchema getUserResourceSchema() {
-
 
         AttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
         if (schemaExtension != null) {
@@ -126,6 +124,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public Boolean isExtensionSet() {
+
         AttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
         if (schemaExtension != null) {
             return true;
@@ -140,6 +139,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public Boolean isUserExtensionSet(String tenantId) {
+
         Map<String, AttributeSchema> schemaExtensionMap = SCIMUserSchemaExtensionBuilder.getInstance().
                 getExtensionSchema(tenantId);
         if (schemaExtensionMap != null && !schemaExtensionMap.isEmpty()) {
@@ -155,6 +155,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public String getExtensionName() {
+
         AttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
         if (schemaExtension == null) {
             return null;
@@ -168,6 +169,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public String getExtensionURI() {
+
         AttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
         if (schemaExtension == null) {
             return null;
@@ -181,6 +183,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public boolean getExtensionRequired() {
+
         AttributeSchema schemaExtension = SCIMUserSchemaExtensionBuilder.getInstance().getExtensionSchema();
         if (schemaExtension == null) {
             return false;
@@ -194,6 +197,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public SCIMResourceTypeSchema getServiceProviderConfigResourceSchema() {
+
         return SCIMSchemaDefinitions.SCIM_SERVICE_PROVIDER_CONFIG_SCHEMA;
     }
 
@@ -203,6 +207,7 @@ public class SCIMResourceSchemaManager {
      * @return
      */
     public SCIMResourceTypeSchema getGroupResourceSchema() {
+
         return SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA;
     }
 
@@ -231,13 +236,13 @@ public class SCIMResourceSchemaManager {
         return SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA;
     }
 
-
     /*
      * check whether the extension is enabled
      *
      * @return
      */
     public Boolean isGroupExtensionSet(String tenantId) {
+
         Map<String, AttributeSchema> schemaExtensionMap = SCIMGroupSchemaExtensionBuilder.getInstance().
                 getExtensionSchema(tenantId);
         if (schemaExtensionMap != null && !schemaExtensionMap.isEmpty()) {
@@ -246,9 +251,6 @@ public class SCIMResourceSchemaManager {
             return false;
         }
     }
-
-
-
 
     public SCIMResourceTypeSchema getRoleResourceSchema() {
 
