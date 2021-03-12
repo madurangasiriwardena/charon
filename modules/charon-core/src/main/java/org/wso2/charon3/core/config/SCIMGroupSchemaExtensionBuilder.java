@@ -35,11 +35,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * This class is to build the extension user schema though the config file.
+ * This class is to build the extension group schema though the config file.
  */
-public class SCIMUserSchemaExtensionBuilder {
+public class SCIMGroupSchemaExtensionBuilder {
 
-    private static SCIMUserSchemaExtensionBuilder configReader = new SCIMUserSchemaExtensionBuilder();
+    private static SCIMGroupSchemaExtensionBuilder configReader = new SCIMGroupSchemaExtensionBuilder();
     // configuration map
     private static Map<String, ExtensionAttributeSchemaConfig> extensionConfig =
             new HashMap<String, ExtensionAttributeSchemaConfig>();
@@ -48,13 +48,13 @@ public class SCIMUserSchemaExtensionBuilder {
             new HashMap<String, Map<String, AttributeSchema>>();
 
     // extension root attribute name
-    String extensionRootAttributeURI = null;
+    String extensionRootAttributeName = null;
     // built schema map
     private static Map<String, AttributeSchema> attributeSchemas = new HashMap<String, AttributeSchema>();
     // extension root attribute schema
     private AttributeSchema extensionSchema = null;
 
-    public static SCIMUserSchemaExtensionBuilder getInstance() {
+    public static SCIMGroupSchemaExtensionBuilder getInstance() {
         return configReader;
     }
 
@@ -66,7 +66,7 @@ public class SCIMUserSchemaExtensionBuilder {
      * Logic goes here
      * @throws CharonException
      */
-    public void buildUserSchemaExtension(String configFilePath) throws CharonException, InternalErrorException {
+    public void buildGroupSchemaExtension(String configFilePath) throws CharonException, InternalErrorException {
         readConfiguration(configFilePath);
 
         for (Map.Entry<String, ExtensionAttributeSchemaConfig> attributeSchemaConfig : extensionConfig.entrySet()) {
@@ -83,10 +83,10 @@ public class SCIMUserSchemaExtensionBuilder {
          * Assumption : Final config in the configuration file is the extension
          * root attribute
          */
-        extensionSchema = attributeSchemas.get(extensionRootAttributeURI);
+        extensionSchema = attributeSchemas.get(extensionRootAttributeName);
     }
 
-    public void buildUserSchemaExtension(String configFilePath, String tenantId) throws CharonException,
+    public void buildGroupSchemaExtension(String configFilePath, String tenantId) throws CharonException,
             InternalErrorException {
         extensionConfig.clear();
         attributeSchemas.clear();
@@ -106,11 +106,11 @@ public class SCIMUserSchemaExtensionBuilder {
          * Assumption : Final config in the configuration file is the extension
          * root attribute
          */
-        extensionSchema = attributeSchemas.get(extensionRootAttributeURI);
+        extensionSchema = attributeSchemas.get(extensionRootAttributeName);
 
         Map<String, AttributeSchema> schemaMap = extensionSchemaMap.get(tenantId);
         if (schemaMap == null) {
-          schemaMap = new HashMap<String, AttributeSchema>();
+            schemaMap = new HashMap<String, AttributeSchema>();
         }
         schemaMap.put(extensionSchema.getURI(), extensionSchema);
         extensionSchemaMap.put(tenantId, schemaMap);
@@ -138,16 +138,16 @@ public class SCIMUserSchemaExtensionBuilder {
             JSONArray attributeConfigArray = new JSONArray(jsonString);
 
             for (int index = 0; index < attributeConfigArray.length(); ++index) {
-                JSONObject rawAttributeConfig = attributeConfigArray.getJSONObject(index);
-                ExtensionAttributeSchemaConfig schemaAttributeConfig =
-                        new ExtensionAttributeSchemaConfig(rawAttributeConfig);
-                extensionConfig.put(schemaAttributeConfig.getURI(), schemaAttributeConfig);
+                JSONObject attributeConfig = attributeConfigArray.getJSONObject(index);
+                ExtensionAttributeSchemaConfig attrubteConfig =
+                        new ExtensionAttributeSchemaConfig(attributeConfig);
+                extensionConfig.put(attrubteConfig.getName(), attrubteConfig);
 
                 /**
                  * NOTE: Assume last config is the root config
                  */
                 if (index == attributeConfigArray.length() - 1) {
-                    extensionRootAttributeURI = schemaAttributeConfig.getURI();
+                    extensionRootAttributeName = attrubteConfig.getName();
                 }
             }
             inputStream.close();
@@ -163,19 +163,6 @@ public class SCIMUserSchemaExtensionBuilder {
         }
     }
 
-    private String getSubAttributeURI(ExtensionAttributeSchemaConfig config, String subAttributeName) {
-
-        if (isRootConfig(config)) {
-            return config.getURI() + ":" + subAttributeName;
-        } else {
-            return config.getURI() + "." + subAttributeName;
-        }
-    }
-
-    private boolean isRootConfig(ExtensionAttributeSchemaConfig config) {
-
-        return config.getURI().equals(config.getName());
-    }
 
     /*
      * Knows how to build a complex attribute
@@ -183,17 +170,10 @@ public class SCIMUserSchemaExtensionBuilder {
      * @param config
      */
     private void buildComplexAttributeSchema(ExtensionAttributeSchemaConfig config) throws InternalErrorException {
-        if (!attributeSchemas.containsKey(config.getURI())) {
+        if (!attributeSchemas.containsKey(config.getName())) {
             String[] subAttributes = config.getSubAttributes();
             for (String subAttribute : subAttributes) {
-                ExtensionAttributeSchemaConfig subAttribConfig =
-                        extensionConfig.get(getSubAttributeURI(config, subAttribute));
-                if (subAttribConfig == null) {
-                    String error = String.format("Error adding subattribute %s to attribute %s. Error in SCIM2 " +
-                                    "extension schema config format.", subAttribute, config.getURI());
-                    throw new InternalErrorException(error);
-                }
-
+                ExtensionAttributeSchemaConfig subAttribConfig = extensionConfig.get(subAttribute);
                 if (!subAttribConfig.getType().equals(SCIMDefinitions.DataType.COMPLEX)) {
                     if (subAttribConfig.hasChildren()) {
                         String error = "A attribute of primitive type can not have sub attributes";
@@ -225,11 +205,11 @@ public class SCIMUserSchemaExtensionBuilder {
         String[] subAttributeNames = config.getSubAttributes();
         ArrayList<AttributeSchema> subAttributes = new ArrayList<AttributeSchema>();
         for (String subAttributeName : subAttributeNames) {
-            subAttributes.add(attributeSchemas.get(getSubAttributeURI(config, subAttributeName)));
+            subAttributes.add(attributeSchemas.get(subAttributeName));
         }
         AttributeSchema complexAttribute =
                 createSCIMAttributeSchema(config, subAttributes);
-        attributeSchemas.put(config.getURI(), complexAttribute);
+        attributeSchemas.put(config.getName(), complexAttribute);
     }
 
     /*
@@ -239,10 +219,10 @@ public class SCIMUserSchemaExtensionBuilder {
      */
     private void buildSimpleAttributeSchema(ExtensionAttributeSchemaConfig config) {
         ArrayList<AttributeSchema> subAttributeList = new ArrayList<AttributeSchema>();
-        if (!attributeSchemas.containsKey(config.getURI())) {
+        if (!attributeSchemas.containsKey(config.getName())) {
             AttributeSchema attributeSchema =
                     createSCIMAttributeSchema(config, subAttributeList);
-            attributeSchemas.put(config.getURI(), attributeSchema);
+            attributeSchemas.put(config.getName(), attributeSchema);
         }
 
     }
