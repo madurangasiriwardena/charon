@@ -106,7 +106,7 @@ public class SCIMUserSchemaExtensionBuilder {
          * Assumption : Final config in the configuration file is the extension
          * root attribute
          */
-        extensionSchema = attributeSchemas.get(extensionRootAttributeName);
+        extensionSchema = attributeSchemas.get(extensionRootAttributeURI);
 
         Map<String, AttributeSchema> schemaMap = extensionSchemaMap.get(tenantId);
         if (schemaMap == null) {
