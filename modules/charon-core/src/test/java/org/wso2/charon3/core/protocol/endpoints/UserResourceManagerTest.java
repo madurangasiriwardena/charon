@@ -90,6 +90,7 @@ public class UserResourceManagerTest extends PowerMockTestCase {
             "  ]\n" +
             "}";
 
+
     private final String newUserSCIMObjectStringUpdate = "{\n" +
             "  \"schemas\": \n" +
             "    [\"urn:ietf:params:scim:schemas:core:2.0:User\",\n" +
