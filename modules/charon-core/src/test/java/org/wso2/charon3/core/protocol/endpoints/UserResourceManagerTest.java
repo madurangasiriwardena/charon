@@ -90,7 +90,6 @@ public class UserResourceManagerTest extends PowerMockTestCase {
             "  ]\n" +
             "}";
 
-
     private final String newUserSCIMObjectStringUpdate = "{\n" +
             "  \"schemas\": \n" +
             "    [\"urn:ietf:params:scim:schemas:core:2.0:User\",\n" +
@@ -1063,41 +1062,20 @@ public class UserResourceManagerTest extends PowerMockTestCase {
 
     }
 
-    @Test(dataProvider = "dataForUpdateWithPATCH")
-    public void testUpdateWithPATCH(String existingId, String scimObjectString,
-                                    String attributes, String excludeAttributes, Object objectNEWUser,
-                                    Object objectOLDUser, int expectedScimResponseStatus)
-            throws BadRequestException, NotFoundException, CharonException, NotImplementedException {
-
-        User userNew = (User) objectNEWUser;
-        User userOld = (User) objectOLDUser;
+    @DataProvider(name = "dataForUpdateWithPATCH")
+    public Object[][] dataToUpdateWithPATCH() throws BadRequestException, CharonException, InternalErrorException {
 
         SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+        JSONDecoder decoder = new JSONDecoder();
 
-        mockStatic(AbstractResourceManager.class);
+        User userOld = decoder.decodeResource(newUserSCIMObjectStringPatch, schema, new User());
+        String id = userOld.getId();
 
-        when(AbstractResourceManager.getResourceEndpointURL(SCIMConstants.USER_ENDPOINT))
-                .thenReturn(endpoint + "/" + userID);
-        when(AbstractResourceManager.getEncoder()).thenReturn(new JSONEncoder());
-        when(AbstractResourceManager.getDecoder()).thenReturn(new JSONDecoder());
+        User userNew = decoder.decodeResource(newUserSCIMObjectStringPatchUpdate, schema, new User());
 
-        when(userManager.getUser(existingId,
-                ResourceManagerUtil.getAllAttributeURIs(schema))).thenReturn(userOld);
-
-        User validatedUser = (User) ServerSideValidator.validateUpdatedSCIMObject(userOld, userNew, schema);
-        when(userManager.updateUser(anyObject(), anyObject())).thenReturn(validatedUser);
-
-        SCIMResponse outputScimResponse = userResourceManager.updateWithPATCH(existingId, scimObjectString,
-                userManager, attributes, excludeAttributes);
-        JSONObject obj = new JSONObject(outputScimResponse.getResponseMessage());
-
-        //Assertions
-        Assert.assertEquals(outputScimResponse.getResponseStatus(), expectedScimResponseStatus);
-
-        String returnedURI = outputScimResponse.getHeaderParamMap().get("Location");
-        String expectedURI = endpoint + "/" + obj.getString("id");
-        Assert.assertEquals(returnedURI, expectedURI);
-
+        return new Object[][]{
+                {id, newUserSCIMObjectStringPatchUpdate, "userName", null, userNew, userOld, success}
+        };
     }
 
     @DataProvider(name = "dataForUpdateWithPATCHProvidedUserManagerHandlerIsNull")
