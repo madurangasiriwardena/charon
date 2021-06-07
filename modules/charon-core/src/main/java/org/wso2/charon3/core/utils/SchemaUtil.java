@@ -22,6 +22,7 @@ import org.wso2.charon3.core.schema.AttributeSchema;
 import org.wso2.charon3.core.schema.ResourceTypeSchema;
 import org.wso2.charon3.core.schema.SCIMDefinitions;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
+import org.wso2.charon3.core.schema.SCIMResourceTypeSchemass;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class SchemaUtil {
                 if (attributeFullName.equals(attributeSchema.getName())) {
                     return attributeSchema;
                 }
-                if (attributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX)) {
+                if (attributeSchema.getType().equals(SCIMDefinitions.DataType.COMPLEX))                                                          {
                     if (attributeSchema.getMultiValued()) {
                         List<AttributeSchema> subAttributeSchemaList = attributeSchema.getSubAttributeSchemas();
                         for (AttributeSchema subAttributeSchema : subAttributeSchemaList) {
