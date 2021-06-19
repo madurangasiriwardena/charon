@@ -65,6 +65,7 @@ public class JSONEncoder {
 
     private String format;
     private static final Logger logger = LoggerFactory.getLogger(JSONEncoder.class);
+    private int noUse;
 
     public JSONEncoder() {
         format = SCIMConstants.JSON;
@@ -84,6 +85,7 @@ public class JSONEncoder {
         //root json object containing the encoded SCIM Object.
         JSONObject rootObject;
         rootObject = this.getSCIMObjectAsJSONObject(scimObject);
+        System.out.println("test");
         return rootObject.toString();
     }
 
